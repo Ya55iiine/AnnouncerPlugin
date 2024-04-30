@@ -11,8 +11,8 @@
 
 import difflib
 
-from genshi import HTML
 from genshi.template import NewTextTemplate, MarkupTemplate, TemplateLoader
+from trac.util.html import html
 from trac.config import BoolOption, ListOption
 from trac.core import implements
 from trac.resource import Resource
@@ -168,7 +168,7 @@ class TicketFormatter(AnnouncerTemplateProvider):
             new_value = ticket[field]
             if (new_value and '\n' in new_value) or \
                     (old_value and '\n' in old_value):
-                long_changes[field.capitalize()] = HTML(
+                long_changes[field.capitalize()] = html(
                     "<pre>\n%s\n</pre>" % (
                         '\n'.join(
                             diff_cleanup(
@@ -204,7 +204,7 @@ class TicketFormatter(AnnouncerTemplateProvider):
                 context = web_context(req, resource)
                 formatter = HtmlFormatter(self.env, context, wikitext)
                 return formatter.generate(True)
-            except Exception, e:
+            except Exception as e:
                 self.log.error("Failed to render %s", repr(wikitext))
                 self.log.error(exception_to_unicode(e, traceback=True))
                 raise
