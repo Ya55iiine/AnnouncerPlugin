@@ -243,7 +243,7 @@ class TicketFormatter(AnnouncerTemplateProvider):
             attachment_link=self.env.abs_href('attachment/ticket', ticket.id)
         )
         # Assuming you have Jinja2 templates in a directory 'path/to/templates'
-        jinja_env = Environment(loader=FileSystemLoader('path/to/templates'))
+        jinja_env = Environment(loader=FileSystemLoader('templates'))
         
         def render_template(template_name, data):
             template = jinja_env.get_template(template_name)
