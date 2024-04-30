@@ -135,7 +135,7 @@ class BittenAnnouncement(Component):
         announcer = AnnouncementSystem(self.env)
         try:
             announcer.send(BittenAnnouncedEvent(build, category))
-        except Exception, e:
+        except Exception as e:
             self.log.exception("Failure creating announcement for build "
                                "%s: %s", build.id, e)
 

@@ -7,7 +7,6 @@
 # you should have received as part of this distribution.
 #
 
-from acct_mgr.api import IAccountChangeListener
 from genshi.template import NewTextTemplate, TemplateLoader
 from trac.config import BoolOption, ListOption
 from trac.core import Component, implements
@@ -34,9 +33,7 @@ class AccountChangeEvent(AnnouncementEvent):
 class AccountManagerAnnouncement(Component):
     """Send announcements on account changes."""
 
-    implements(IAccountChangeListener, IAnnouncementDefaultSubscriber,
-               IAnnouncementEmailDecorator, IAnnouncementFormatter,
-               IAnnouncementSubscriber, IAnnouncementSubscriptionFilter)
+    implements(IAnnouncementDefaultSubscriber, IAnnouncementEmailDecorator, IAnnouncementFormatter, IAnnouncementSubscriber, IAnnouncementSubscriptionFilter)
 
     categories = ('created', 'change', 'delete', 'reset', 'verify', 'approve')
 

@@ -5,7 +5,8 @@
 import re
 from email.utils import parseaddr
 
-from genshi.template import NewTextTemplate, TemplateError
+from jinja2 import Environment, FileSystemLoader
+# from genshi.template import NewTextTemplate, TemplateError
 from trac import __version__ as trac_version
 from trac.config import ListOption, Option
 from trac.core import Component, implements
@@ -143,26 +144,37 @@ class TicketSubjectEmailDecorator(Component):
         if event.realm == 'ticket':
             if 'status' in event.changes:
                 action = 'Status -> %s' % (event.target['status'])
-            template = NewTextTemplate(
-                self.ticket_email_subject.encode('utf8'))
+                
+            jinja_env = Environment(loader=FileSystemLoader('templates'))
+
+        # Load your Jinja2 template
+            template = jinja_env.get_template(self.ticket_email_subject)
+            # template = NewTextTemplate(
+            #     self.ticket_email_subject.encode('utf8'))
             # Create a fallback for invalid custom Genshi template in option.
-            default_template = NewTextTemplate(
-                Option.registry[
-                    ('announcer', 'ticket_email_subject')
-                ].default.encode('utf8'))
-            try:
-                subject = template.generate(
-                    ticket=event.target,
-                    event=event,
-                    action=event.category
-                ).render('text', encoding=None)
-            except TemplateError:
-                # Use fallback template.
-                subject = default_template.generate(
-                    ticket=event.target,
-                    event=event,
-                    action=event.category
-                ).render('text', encoding=None)
+            # default_template = NewTextTemplate(
+            #     Option.registry[
+            #         ('announcer', 'ticket_email_subject')
+            #     ].default.encode('utf8'))
+            
+            # try:
+            #     subject = template.generate(
+            #         ticket=event.target,
+            #         event=event,
+            #         action=event.category
+            #     ).render('text', encoding=None)
+            # except TemplateError:
+            #     # Use fallback template.
+            #     subject = default_template.generate(
+            #         ticket=event.target,
+            #         event=event,
+            #         action=event.category
+            #     ).render('text', encoding=None)
+            subject = template.render(
+                ticket=event.target,
+                event=event,
+                action=event.category
+            )
 
             prefix = self.config.get('announcer', 'email_subject_prefix')
             if prefix == '__default__':
@@ -208,12 +220,24 @@ class WikiSubjectEmailDecorator(Component):
 
     def decorate_message(self, event, message, decorates=None):
         if event.realm == 'wiki':
-            template = NewTextTemplate(self.wiki_email_subject.encode('utf8'))
-            subject = template.generate(
+            # template = NewTextTemplate(self.wiki_email_subject.encode('utf8'))
+            # subject = template.generate(
+            #     page=event.target,
+            #     event=event,
+            #     action=event.category
+            # ).render('text', encoding=None)
+            # Create a Jinja2 environment
+            jinja_env = Environment(loader=FileSystemLoader('templates'))
+
+            # Load your Jinja2 template
+            template = jinja_env.get_template(self.wiki_email_subject)
+
+            # Render the template with context variables
+            subject = template.render(
                 page=event.target,
                 event=event,
                 action=event.category
-            ).render('text', encoding=None)
+            )
 
             prefix = self.config.get('announcer', 'email_subject_prefix')
             if prefix == '__default__':
