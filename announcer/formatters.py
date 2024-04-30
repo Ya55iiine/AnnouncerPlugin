@@ -11,7 +11,8 @@
 
 import difflib
 
-from genshi.template import NewTextTemplate, MarkupTemplate, TemplateLoader
+from jinja2 import Environment, FileSystemLoader
+# from genshi.template import NewTextTemplate, MarkupTemplate, TemplateLoader
 from trac.util.html import html
 from trac.config import BoolOption, ListOption
 from trac.core import implements
@@ -138,16 +139,24 @@ class TicketFormatter(AnnouncerTemplateProvider):
             short_changes=short_changes,
             attachment=event.attachment
         )
-        chrome = Chrome(self.env)
-        dirs = []
-        for provider in chrome.template_providers:
-            dirs += provider.get_templates_dirs()
-        templates = TemplateLoader(dirs, variable_lookup='lenient')
-        template = templates.load('ticket_email_plaintext.txt',
-                                  cls=NewTextTemplate)
-        if template:
-            stream = template.generate(**data)
-            return stream.render('text')
+        # chrome = Chrome(self.env)
+        # dirs = []
+        # for provider in chrome.template_providers:
+        #     dirs += provider.get_templates_dirs()
+        # templates = TemplateLoader(dirs, variable_lookup='lenient')
+        # template = templates.load('ticket_email_plaintext.txt',
+        #                           cls=NewTextTemplate)
+        # if template:
+        #     stream = template.generate(**data)
+        #     return stream.render('text')
+        jinja_env = Environment(loader=FileSystemLoader('templates'))
+
+        # Load your Jinja2 template
+        template = jinja_env.get_template('ticket_email_plaintext.txt')
+
+        # Render the template with context variables
+        stream = template.render(**data)
+        return stream
 
     def _header_fields(self, ticket):
         headers = self.ticket_email_header_fields
@@ -233,16 +242,25 @@ class TicketFormatter(AnnouncerTemplateProvider):
             attachment=event.attachment,
             attachment_link=self.env.abs_href('attachment/ticket', ticket.id)
         )
-        chrome = Chrome(self.env)
-        dirs = []
-        for provider in chrome.template_providers:
-            dirs += provider.get_templates_dirs()
-        templates = TemplateLoader(dirs, variable_lookup='lenient')
-        template = templates.load('ticket_email_mimic.html',
-                                  cls=MarkupTemplate)
-        if template:
-            stream = template.generate(**data)
-            return stream.render()
+        # Assuming you have Jinja2 templates in a directory 'path/to/templates'
+        jinja_env = Environment(loader=FileSystemLoader('path/to/templates'))
+        
+        def render_template(template_name, data):
+            template = jinja_env.get_template(template_name)
+            return template.render(**data)
+        
+        # chrome = Chrome(self.env)
+        # dirs = []
+        # for provider in chrome.template_providers:
+        #     dirs += provider.get_templates_dirs()
+        # templates = TemplateLoader(dirs, variable_lookup='lenient')
+        # template = templates.load('ticket_email_mimic.html',
+        #                           cls=MarkupTemplate)
+        # if template:
+        #     stream = template.generate(**data)
+        #     return stream.render()
+        rendered_html = render_template('ticket_email_mimic.html', data)
+        return rendered_html
 
 
 class WikiFormatter(AnnouncerTemplateProvider):
@@ -303,13 +321,22 @@ Index: %(name)s
                                          page.text.splitlines(), context=3):
                     diff += "%s\n" % line
                 data['diff'] = diff
-        chrome = Chrome(self.env)
-        dirs = []
-        for provider in chrome.template_providers:
-            dirs += provider.get_templates_dirs()
-        templates = TemplateLoader(dirs, variable_lookup='lenient')
-        template = templates.load('wiki_email_plaintext.txt',
-                                  cls=NewTextTemplate)
-        if template:
-            stream = template.generate(**data)
-            return stream.render('text')
+        # chrome = Chrome(self.env)
+        # dirs = []
+        # for provider in chrome.template_providers:
+        #     dirs += provider.get_templates_dirs()
+        # templates = TemplateLoader(dirs, variable_lookup='lenient')
+        # template = templates.load('wiki_email_plaintext.txt',
+        #                           cls=NewTextTemplate)
+        # if template:
+        #     stream = template.generate(**data)
+        #     return stream.render('text')
+        # Create a Jinja2 environment
+        jinja_env = Environment(loader=FileSystemLoader('templates'))
+
+        # Load your Jinja2 template
+        template = jinja_env.get_template('wiki_email_plaintext.txt')
+
+        # Render the template with context variables
+        stream = template.render(**data)
+        return stream
