@@ -7,7 +7,7 @@
 # you should have received as part of this distribution.
 #
 
-import Queue
+import queue
 import time
 import threading
 
@@ -74,7 +74,7 @@ class XmppDistributor(Component):
 
     def get_delivery_queue(self):
         if not self.delivery_queue:
-            self.delivery_queue = Queue.Queue()
+            self.delivery_queue = queue.Queue()
             thread = DeliveryThread(self.delivery_queue, self.send)
             thread.start()
         return self.delivery_queue
