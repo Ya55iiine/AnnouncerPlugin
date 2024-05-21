@@ -314,7 +314,7 @@ class SubscriptionResolver(Component):
 try:
     from trac.util.translation import domain_functions
 except ImportError:
-    from genshi.builder import tag as tag_
+    from trac.util.html import html as tag_
     from trac.util.translation import gettext
 
     _ = gettext

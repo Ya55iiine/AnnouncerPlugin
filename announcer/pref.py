@@ -10,6 +10,7 @@
 
 import operator
 import re
+from lxml import etree
 from genshi.filters.transform import Transformer
 from pkg_resources import resource_filename
 
@@ -194,8 +195,21 @@ class SubscriptionManagementPanel(AnnouncerTemplateProvider):
 
     def filter_stream(self, req, method, filename, stream, data):
         if re.match(r'/prefs/subscription', req.path_info):
-            xpath_match = '//form[@id="userprefs"]//div[@class="buttons"]'
-            stream |= Transformer(xpath_match).empty()
+            # xpath_match = '//form[@id="userprefs"]//div[@class="buttons"]'
+            # stream |= Transformer(xpath_match).empty()
+            
+            # Parse the HTML content
+            root = etree.HTML(stream)
+
+            # Find elements using XPath
+            buttons = root.xpath('//form[@id="userprefs"]//div[@class="buttons"]')
+
+            # Remove the found elements
+            for button in buttons:
+                button.getparent().remove(button)
+
+            # Convert the modified HTML tree back into a string
+            stream = etree.tostring(root, pretty_print=True).decode()
         return stream
 
     def _add_rule(self, arg, req):

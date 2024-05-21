@@ -22,9 +22,9 @@ else:
         extra['cmdclass'] = cmdclass
         extractors = [
             ('**.py', 'python', None),
-            ('**/templates/**.html', 'genshi', None),
-            ('**/templates/**.txt', 'genshi', {
-                'template_class': 'genshi.template:TextTemplate'
+            ('**/templates/**.html', 'jinja2', None),
+            ('**/templates/**.txt', 'jinja2', {
+                'template_class': 'jinja2:Environment'
             }),
         ]
         extra['message_extractors'] = {'announcer': extractors}
