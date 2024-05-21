@@ -16,7 +16,7 @@ from pkg_resources import resource_filename
 
 from trac.core import Component, ExtensionPoint, implements
 from trac.prefs.api import IPreferencePanelProvider
-from trac.web.api import ITemplateStreamFilter
+# from trac.web.api import ITemplateStreamFilter
 from trac.web.chrome import Chrome, ITemplateProvider, add_stylesheet
 
 from announcer.api import _, IAnnouncementDefaultSubscriber, \
@@ -102,7 +102,7 @@ class AnnouncerPreferences(AnnouncerTemplateProvider):
 
 class SubscriptionManagementPanel(AnnouncerTemplateProvider):
 
-    implements(IPreferencePanelProvider, ITemplateStreamFilter)
+    implements(IPreferencePanelProvider)
 
     subscribers = ExtensionPoint(IAnnouncementSubscriber)
     default_subscribers = ExtensionPoint(IAnnouncementDefaultSubscriber)
