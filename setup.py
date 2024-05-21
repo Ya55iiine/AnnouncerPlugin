@@ -55,7 +55,7 @@ setup(
         'Babel': 'Babel>= 0.9.5',
         'acct_mgr': 'TracAccountManager',
         'bitten': 'Bitten',
-        'fullblog': 'TracFullBlogPlugin',
+        'fullblog': 'TracFullBlog',
         'xmpp': 'xmpppy',
         'gnupg': 'gnupg',
     },
