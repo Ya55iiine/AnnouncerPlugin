@@ -11,7 +11,7 @@
 import operator
 import re
 from lxml import etree
-from genshi.filters.transform import Transformer
+# from genshi.filters.transform import Transformer
 from pkg_resources import resource_filename
 
 from trac.core import Component, ExtensionPoint, implements
