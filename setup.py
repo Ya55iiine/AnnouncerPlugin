@@ -20,14 +20,14 @@ else:
     cmdclass = get_l10n_cmdclass()
     if cmdclass:
         extra['cmdclass'] = cmdclass
-        extractors = [
-            ('**.py', 'python', None),
-            ('**/templates/**.html', 'jinja2', None),
-            ('**/templates/**.txt', 'jinja2', {
-                'template_class': 'jinja2:Environment'
-            }),
-        ]
-        extra['message_extractors'] = {'announcer': extractors}
+        # extractors = [
+        #     ('**.py', 'python', None),
+        #     ('**/templates/**.html', 'jinja2', None),
+        #     ('**/templates/**.txt', 'jinja2', {
+        #         'template_class': 'jinja2:Environment'
+        #     }),
+        # ]
+        # extra['message_extractors'] = {'announcer': extractors}
 
 setup(
     name='TracAnnouncer',
