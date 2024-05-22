@@ -87,7 +87,7 @@ class AnnouncerPreferences(AnnouncerTemplateProvider):
         chrome = Chrome(self.env)
         for name, label, template, data in self._get_boxes(req):
             streams.append((label, chrome.render_fragment(
-                req, template, data, fragment=True
+                req, template, data
             )))
 
         if req.method == 'POST':
