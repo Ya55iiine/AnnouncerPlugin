@@ -10,7 +10,7 @@
 
 import fnmatch
 import re
-import urllib
+import urllib.parse
 
 from trac.config import BoolOption, ListOption
 from trac.core import Component, implements
@@ -82,7 +82,7 @@ class GeneralWikiSubscriber(Component):
         def match(pattern):
             for raw in pattern['target'].split(' '):
                 if raw != '':
-                    pat = urllib.unquote(raw).replace('*', '.*')
+                    pat = urllib.parse.unquote(raw).replace('*', '.*')
                     if re.match(pat, event.target.name):
                         return True
 
@@ -125,7 +125,7 @@ class GeneralWikiSubscriber(Component):
 
         return 'prefs_announcer_wiki.html', dict(
             wiki_interests='\n'.join(
-                urllib.unquote(x) for x in interests['target'].split(' ')))
+                urllib.parse.unquote(x) for x in interests['target'].split(' ')))
 
 
 class JoinableGroupSubscriber(Component):
