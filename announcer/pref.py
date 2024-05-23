@@ -85,15 +85,15 @@ class AnnouncerPreferences(AnnouncerTemplateProvider):
     def render_preference_panel(self, req, panel, path_info=None):
         streams = []
         chrome = Chrome(self.env)
+        
         for name, label, template, data in self._get_boxes(req):
-            streams.append((label, chrome.render_fragment(
-                req, template, data
-            )))
+            streams.append((name, label, chrome.render_fragment(req, template, data)))
 
         if req.method == 'POST':
             req.redirect(req.href.prefs('announcer'))
-
+            
         add_stylesheet(req, 'announcer/css/announcer_prefs.css')
+
         if hasattr(chrome, 'jenv'):
             return 'prefs_announcer.html', {"boxes": streams}, None
         else:
